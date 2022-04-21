@@ -14,16 +14,18 @@ const Header = (props) => {
         </LeftSection>
         <MidSection>
           <div>
-            <i class="fa-solid fa-house"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-user-group"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-tv-retro"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-shop"></i>
+            <div>
+              <i class="fa-solid fa-house"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-user-group"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-house"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-shop"></i>
+            </div>
           </div>
         </MidSection>
         <RightSection>
@@ -78,8 +80,19 @@ const LeftSection = styled.div`
 `;
 const MidSection = styled.div`
   display: flex;
+  flex-grow: 1;
+  justify-content: center;
   div {
-    border: 2px solid red;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 768px;
+    i {
+      color: gray;
+      height: 28px;
+      width: 28px;
+    }
   }
 `;
 const RightSection = styled.div`
@@ -92,8 +105,8 @@ const UserProfile = styled.div`
     font-weight: bold;
   }
   img {
-    height: 48px;
-    width: 48px;
+    height: 38px;
+    width: 38px;
     border-radius: 50%;
     margin: 0 10px;
   }
