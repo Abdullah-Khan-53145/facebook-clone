@@ -32,10 +32,13 @@ const MainSection = (props) => {
 };
 
 const Container = styled.div`
+  max-width: 768px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: white;
   border-radius: 10px;
+  margin: 0px 30px;
 `;
 const UpperSection = styled.div`
   display: flex;
@@ -61,6 +64,11 @@ const LowerSection = styled.div`
   margin: 0px 30px;
   padding: 5px 0px;
   justify-content: space-between;
+  @media (max-width: 560px) {
+    margin: 8px;
+    padding: 8px;
+  }
+
   button {
     padding: 15px 10px;
     border-radius: 10px;
@@ -71,9 +79,14 @@ const LowerSection = styled.div`
     &:hover {
       background-color: #dfe1ee;
     }
-
     i {
       padding: 5px;
+    }
+    @media (max-width: 560px) {
+      font-size: 12px;
+    }
+    @media (max-width: 460px) {
+      font-size: 10px;
     }
   }
 `;
