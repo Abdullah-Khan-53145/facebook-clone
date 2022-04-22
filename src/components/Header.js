@@ -35,7 +35,7 @@ const Header = (props) => {
               src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
               alt=""
             />
-            <span>Name</span>
+            <span>Abdullah Khan</span>
           </UserProfile>
           <div>
             <div>
@@ -58,9 +58,8 @@ const Header = (props) => {
   );
 };
 const Container = styled.div`
+  background-color: white;
   display: flex;
-  /* padding: 10px 20px; */
-  padding-top: 8px;
   @media (max-width: 768px) {
     justify-content: space-between;
   }
@@ -68,10 +67,11 @@ const Container = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  @media (min-width: 1240px) {
-    width: 300px;
-  }
 
+  @media (min-width: 1240px) {
+    width: 400px;
+    justify-content: flex-start;
+  }
   justify-content: center;
   div {
     display: flex;
@@ -118,14 +118,15 @@ const MidSection = styled.div`
     max-width: 768px;
     span {
       width: 70px;
-      padding: 5px 0;
+      padding: 10px 0;
       &:first-child {
-        border-bottom: 3px solid #3b5998;
+        border-bottom: 3px solid #1b74e4;
         i {
-          color: #3b5998;
+          color: #1b74e4;
         }
         &:hover {
-          background-color: #dfe1ee;
+          border-radius: 0;
+          background-color: white;
         }
       }
       &:hover {
@@ -141,7 +142,7 @@ const MidSection = styled.div`
   }
 `;
 const RightSection = styled.div`
-  width: 300px;
+  width: 400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
