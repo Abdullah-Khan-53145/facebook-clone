@@ -58,6 +58,9 @@ const Header = (props) => {
   );
 };
 const Container = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
   background-color: white;
   display: flex;
   @media (max-width: 768px) {
@@ -80,6 +83,7 @@ const LeftSection = styled.div`
     background-color: #f0f2f5;
     i {
       color: gray;
+
       margin: 0 8px;
     }
     @media (max-width: 1240px) {
@@ -139,8 +143,7 @@ const MidSection = styled.div`
     }
     i {
       color: gray;
-      height: 28px;
-      width: 28px;
+      font-size: 23px;
     }
   }
 `;
