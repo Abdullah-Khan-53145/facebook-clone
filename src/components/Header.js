@@ -9,6 +9,7 @@ const Header = (props) => {
             alt=""
           />
           <div>
+            <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="search facebook" />
           </div>
         </LeftSection>
@@ -37,16 +38,18 @@ const Header = (props) => {
             <span>Name</span>
           </UserProfile>
           <div>
-            <i class="fa-solid fa-bars-sort"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-comment"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-bell"></i>
-          </div>
-          <div>
-            <i class="fa-solid fa-caret-down"></i>
+            <div>
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-comment"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+              <i class="fa-solid fa-caret-down"></i>
+            </div>
           </div>
         </RightSection>
       </Container>
@@ -55,26 +58,34 @@ const Header = (props) => {
 };
 const Container = styled.div`
   display: flex;
-  padding: 0px 20px;
+  padding: 10px 20px;
 `;
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
   width: 300px;
   justify-content: center;
-
+  div {
+    display: flex;
+    padding: 8px 10px;
+    border-radius: 50px;
+    background-color: #dfe1ee;
+    @media (max-width: 1240px) {
+      input {
+        display: none;
+      }
+    }
+  }
   img {
     height: 38px;
     width: 38px;
   }
   input {
     margin: 0 8px;
-    padding: 8px 10px;
-    width: 200px;
     font-size: 15px;
+
     border: none;
     outline: none;
-    border-radius: 50px;
     background-color: #dfe1ee;
   }
 `;
@@ -96,7 +107,24 @@ const MidSection = styled.div`
   }
 `;
 const RightSection = styled.div`
+  width: 300px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  div {
+    display: flex;
+    justify-content: space-between;
+    div {
+      background-color: #dfe1ee;
+      padding: 10px;
+      border-radius: 50px;
+      margin: 0 5px;
+      i {
+        width: 18px;
+      }
+    }
+  }
 `;
 const UserProfile = styled.div`
   display: flex;
