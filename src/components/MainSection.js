@@ -32,10 +32,11 @@ const MainSection = (props) => {
 };
 
 const Container = styled.div`
-  max-width: 768px;
+  max-width: 670px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  max-height: 200px;
   background-color: white;
   border-radius: 10px;
   margin: 0px 30px;
@@ -51,16 +52,21 @@ const UpperSection = styled.div`
     margin-right: 8px;
   }
   button {
-    background-color: #dfe1ee;
+    background-color: #f0f2f5;
     height: 40px;
     border: 1px solid white;
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 16px;
+    color: gray;
     flex: 1;
   }
 `;
 const LowerSection = styled.div`
   display: flex;
-  border-top: 2px solid gray;
+  border-top: 1px solid gray;
   margin: 0px 30px;
   padding: 5px 0px;
   justify-content: space-between;
@@ -77,7 +83,7 @@ const LowerSection = styled.div`
     font-size: 16px;
     cursor: pointer;
     &:hover {
-      background-color: #dfe1ee;
+      background-color: #f0f2f5;
     }
     i {
       padding: 5px;

@@ -10,7 +10,7 @@ const Header = (props) => {
           />
           <div>
             <i className="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="search facebook" />
+            <input type="text" placeholder="Search Facebook" />
           </div>
         </LeftSection>
         <MidSection>
@@ -77,8 +77,11 @@ const LeftSection = styled.div`
     display: flex;
     padding: 8px 10px;
     border-radius: 50px;
-    background-color: #dfe1ee;
-
+    background-color: #f0f2f5;
+    i {
+      color: gray;
+      margin: 0 8px;
+    }
     @media (max-width: 1240px) {
       input {
         width: 0px;
@@ -100,7 +103,7 @@ const LeftSection = styled.div`
 
     border: none;
     outline: none;
-    background-color: #dfe1ee;
+    background-color: #f0f2f5;
   }
 `;
 const MidSection = styled.div`
@@ -131,7 +134,7 @@ const MidSection = styled.div`
       }
       &:hover {
         border-radius: 10px;
-        background-color: #dfe1ee;
+        background-color: #f0f2f5;
       }
     }
     i {
@@ -168,7 +171,7 @@ const RightSection = styled.div`
         border-bottom: 2px solid gray;
         cursor: pointer;
       }
-      background-color: #dfe1ee;
+      background-color: #f0f2f5;
       padding: 10px;
       border-radius: 50px;
       margin: 0 5px;

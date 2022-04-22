@@ -3,7 +3,6 @@ const RightSection = (props) => {
   return (
     <>
       <Container>
-        <h1>This Right Section 💣 </h1>
         <h1>Group conversations</h1>
         <Group>
           <div>
@@ -20,6 +19,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  gap: 10px;
 
   h1 {
     font-size: 18px;
@@ -30,6 +30,7 @@ const Group = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 20px;
   div {
     margin: 0px 8px;
     background-color: lightgray;

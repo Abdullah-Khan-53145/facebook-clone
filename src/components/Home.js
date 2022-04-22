@@ -25,6 +25,8 @@ const Container = styled.div`
   padding-top: 30px;
 `;
 const Left = styled.div`
+  max-width: 400px;
+  width: 100%;
   @media (max-width: 1100px) {
     display: none;
   }
@@ -38,7 +40,7 @@ const Right = styled.div`
   max-width: 400px;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   @media (max-width: 860px) {
     display: none;
   }
