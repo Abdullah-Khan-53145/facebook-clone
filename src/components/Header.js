@@ -9,24 +9,24 @@ const Header = (props) => {
             alt=""
           />
           <div>
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="search facebook" />
           </div>
         </LeftSection>
         <MidSection>
           <div>
-            <div>
-              <i class="fa-solid fa-house"></i>
-            </div>
-            <div>
-              <i class="fa-solid fa-user-group"></i>
-            </div>
-            <div>
-              <i class="fa-solid fa-house"></i>
-            </div>
-            <div>
-              <i class="fa-solid fa-shop"></i>
-            </div>
+            <span>
+              <i className="fa-solid fa-house"></i>
+            </span>
+            <span>
+              <i className="fa-solid fa-user-group"></i>
+            </span>
+            <span>
+              <i className="fa-solid fa-house"></i>
+            </span>
+            <span>
+              <i className="fa-solid fa-shop"></i>
+            </span>
           </div>
         </MidSection>
         <RightSection>
@@ -39,16 +39,17 @@ const Header = (props) => {
           </UserProfile>
           <div>
             <div>
-              <i class="fa-solid fa-bell"></i>
+              <i className="fa-solid fa-bell"></i>
             </div>
             <div>
-              <i class="fa-solid fa-comment"></i>
+              <i className="fa-solid fa-comment"></i>
             </div>
             <div>
-              <i class="fa-solid fa-bell"></i>
+              <i className="fa-solid fa-bell"></i>
             </div>
             <div>
-              <i class="fa-solid fa-caret-down"></i>
+              <i className="fa-solid fa-caret-down"></i>
+              <a>Signout</a>
             </div>
           </div>
         </RightSection>
@@ -58,30 +59,43 @@ const Header = (props) => {
 };
 const Container = styled.div`
   display: flex;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
+  padding-top: 8px;
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  width: 300px;
+  @media (min-width: 1240px) {
+    width: 300px;
+  }
+
   justify-content: center;
   div {
     display: flex;
     padding: 8px 10px;
     border-radius: 50px;
     background-color: #dfe1ee;
+
     @media (max-width: 1240px) {
       input {
-        display: none;
+        width: 0px;
+      }
+      &:hover input {
+        width: 100%;
+        padding: 0 5px;
       }
     }
   }
   img {
     height: 38px;
     width: 38px;
+
+    margin: 0 8px;
   }
   input {
-    margin: 0 8px;
     font-size: 15px;
 
     border: none;
@@ -90,6 +104,9 @@ const LeftSection = styled.div`
   }
 `;
 const MidSection = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
   display: flex;
   flex-grow: 1;
   justify-content: center;
@@ -99,6 +116,23 @@ const MidSection = styled.div`
     justify-content: space-around;
     align-items: center;
     max-width: 768px;
+    span {
+      width: 70px;
+      padding: 5px 0;
+      &:first-child {
+        border-bottom: 3px solid #3b5998;
+        i {
+          color: #3b5998;
+        }
+        &:hover {
+          background-color: #dfe1ee;
+        }
+      }
+      &:hover {
+        border-radius: 10px;
+        background-color: #dfe1ee;
+      }
+    }
     i {
       color: gray;
       height: 28px;
@@ -115,7 +149,24 @@ const RightSection = styled.div`
   div {
     display: flex;
     justify-content: space-between;
+    position: relative;
+
     div {
+      &:hover a {
+        display: block;
+      }
+      a {
+        position: absolute;
+        display: none;
+        background-color: white;
+        padding: 8px 10px;
+        top: 35px;
+        font-size: 12px;
+        font-weight: bold;
+        left: -15px;
+        border-bottom: 2px solid gray;
+        cursor: pointer;
+      }
       background-color: #dfe1ee;
       padding: 10px;
       border-radius: 50px;
@@ -131,12 +182,19 @@ const UserProfile = styled.div`
   align-items: center;
   span {
     font-weight: bold;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
   img {
     height: 38px;
     width: 38px;
     border-radius: 50%;
     margin: 0 10px;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 `;
+const SignOut = styled.div``;
 export default Header;
