@@ -25,8 +25,6 @@ const Container = styled.div`
   padding-top: 30px;
 `;
 const Left = styled.div`
-  position: fixed;
-  top: 70px;
   max-width: 400px;
   width: 100%;
   @media (max-width: 1100px) {
@@ -40,10 +38,6 @@ const Main = styled.div`
   flex: 1;
 `;
 const Right = styled.div`
-  position: fixed;
-  top: 70px;
-  right: 0;
-  z-index: 100;
   max-width: 400px;
   width: 100%;
   display: flex;

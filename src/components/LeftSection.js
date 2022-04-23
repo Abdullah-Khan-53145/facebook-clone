@@ -46,6 +46,8 @@ const LeftSection = (props) => {
 };
 
 const Container = styled.div`
+  position: fixed;
+  top: 70px;
   div {
     &:last-child {
       display: flex;

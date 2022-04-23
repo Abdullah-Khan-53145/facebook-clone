@@ -16,6 +16,9 @@ const RightSection = (props) => {
 };
 
 const Container = styled.div`
+  position: fixed;
+  top: 70px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
