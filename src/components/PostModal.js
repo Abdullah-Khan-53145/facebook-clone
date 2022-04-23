@@ -1,14 +1,19 @@
 import styled from "styled-components";
-
+import { connect } from "react-redux";
+import { togglePostModal } from "../actions";
 const PostModal = (props) => {
+  const handleClose = (e) => {
+    e.preventDefault();
+    props.toggleModal();
+  };
   return (
     <>
-      <Container>
+      <Container style={props.display}>
         <Modal>
           <ModalHeader>
             <h1>Create Post</h1>
-            <button>
-              <i class="fa-solid fa-xmark"></i>
+            <button onClick={handleClose}>
+              <i className="fa-solid fa-xmark"></i>
             </button>
           </ModalHeader>
           <CreatePost>
@@ -49,6 +54,7 @@ const PostModal = (props) => {
 };
 
 const Container = styled.div`
+  display: flex;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -56,7 +62,6 @@ const Container = styled.div`
   right: 0;
   background-color: rgba(255, 255, 255, 0.5);
   z-index: 100;
-  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -172,4 +177,11 @@ const ImgPost = styled.div`
     }
   }
 `;
-export default PostModal;
+
+const mapStateToProps = (state) => ({
+  display: state.togglePostModalState,
+});
+const mapDispatchToProps = (dispatch) => ({
+  toggleModal: () => dispatch(togglePostModal("none")),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PostModal);

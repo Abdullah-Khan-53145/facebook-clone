@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Post from "./Post";
 import PostModal from "./PostModal";
+import { connect } from "react-redux";
+import { togglePostModal } from "../actions";
 const MainSection = (props) => {
   return (
     <>
@@ -13,19 +15,21 @@ const MainSection = (props) => {
                 alt=""
               />
             </div>
-            <button>What's on your mind, Abdullah?</button>
+            <button onClick={props.toggleModal}>
+              What's on your mind, Abdullah?
+            </button>
           </UpperSection>
           <LowerSection>
             <button>
-              <i class="fa-solid fa-video"></i>
+              <i className="fa-solid fa-video"></i>
               Live video
             </button>
             <button>
-              <i class="fa-solid fa-camera"></i>
+              <i className="fa-solid fa-camera"></i>
               Photo/video
             </button>
             <button>
-              <i class="fa-solid fa-face-smile"></i>
+              <i className="fa-solid fa-face-smile"></i>
               Feeling/Activity
             </button>
           </LowerSection>
@@ -96,6 +100,10 @@ const UpperSection = styled.div`
     font-size: 16px;
     color: gray;
     flex: 1;
+    cursor: pointer;
+    &:hover {
+      background-color: lightgray;
+    }
   }
 `;
 const LowerSection = styled.div`
@@ -130,4 +138,9 @@ const LowerSection = styled.div`
     }
   }
 `;
-export default MainSection;
+
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  toggleModal: () => dispatch(togglePostModal("flex")),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MainSection);
