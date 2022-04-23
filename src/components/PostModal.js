@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { togglePostModal } from "../actions";
+import { useState } from "react";
+
 const PostModal = (props) => {
+  // later after making login component
+  // const [img, setImg] = useState();
+  const [caption, setCaption] = useState("");
   const handleClose = (e) => {
     e.preventDefault();
     props.toggleModal();
@@ -33,18 +38,25 @@ const PostModal = (props) => {
             </ActorInfo>
             <textarea
               placeholder="What's on your mind? Name"
-              name=""
-              id=""
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
               cols="30"
               rows="5"
             ></textarea>
             <ImgPost>
               <small>Add your Post</small>
-              <div>
+              <label htmlFor="upload__img">
                 <i className="fa-solid fa-image"></i>
                 Upload a picture
-              </div>
+              </label>
             </ImgPost>
+            <input
+              type="file"
+              name="upload__img"
+              accept="image/png, image/gif, image/jpeg"
+              id="upload__img"
+              style={{ display: "none" }}
+            />
             <input type="submit" value="Post" />
           </CreatePost>
         </Modal>
@@ -165,7 +177,7 @@ const ImgPost = styled.div`
   padding: 15px 10px;
   border-radius: 12px;
   justify-content: space-between;
-  div {
+  label {
     display: flex;
     align-items: center;
     gap: 10px;

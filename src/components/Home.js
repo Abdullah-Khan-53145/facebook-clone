@@ -2,9 +2,11 @@ import styled from "styled-components";
 import LeftSection from "./LeftSection";
 import MainSection from "./MainSection";
 import RightSection from "./RightSection";
+import Header from "./Header";
 const Home = (props) => {
   return (
     <>
+      <Header />
       <Container>
         <Left>
           <LeftSection />
