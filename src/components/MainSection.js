@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Post from "./Post";
+import PostModal from "./PostModal";
 const MainSection = (props) => {
   return (
     <>
@@ -53,6 +54,7 @@ const MainSection = (props) => {
           caption="This is my post"
           Img="https://wallpaperaccess.com/full/6319352.jpg"
         />
+        <PostModal />
       </Container>
     </>
   );
