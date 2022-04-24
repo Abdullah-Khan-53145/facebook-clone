@@ -85,8 +85,14 @@ const PostModal = (props) => {
               name="upload__img"
               accept="image/png, image/gif, image/jpeg"
               id="upload__img"
+              onC
               style={{ display: "none" }}
             />
+            <PostImg>
+              <div>
+                <img src="https://wallpapercave.com/wp/wp7992445.jpg" alt="" />
+              </div>
+            </PostImg>
             <input
               type="submit"
               value="Post"
@@ -227,6 +233,19 @@ const ImgPost = styled.div`
     transition: color 0.2s;
     &:hover {
       color: lightgray;
+    }
+  }
+`;
+
+const PostImg = styled.div`
+  div {
+    display: flex;
+    justify-content: flex-start;
+    img {
+      padding: 10px;
+      height: 150px;
+      max-width: 500px;
+      object-fit: contain;
     }
   }
 `;
