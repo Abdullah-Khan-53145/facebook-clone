@@ -23,26 +23,56 @@ const PostModal = (props) => {
           </ModalHeader>
           <CreatePost>
             <ActorInfo>
-              <img
-                src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-                alt=""
-              />
-              <div>
-                <span>Name</span>
-                <button>
-                  <i className="fa-solid fa-user-group"></i>
-                  Friends
-                  <i className="fa-solid fa-chevron-down"></i>
-                </button>
-              </div>
+              {props.user ? (
+                <>
+                  <img src={props.user.photoURL} alt="" />
+                  <div>
+                    <span>{props.user.displayName}</span>
+
+                    <button>
+                      <i className="fa-solid fa-user-group"></i>
+                      Friends
+                      <i className="fa-solid fa-chevron-down"></i>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <img
+                    src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                    alt=""
+                  />
+                  <div>
+                    <span>Name</span>
+
+                    <button>
+                      <i className="fa-solid fa-user-group"></i>
+                      Friends
+                      <i className="fa-solid fa-chevron-down"></i>
+                    </button>
+                  </div>
+                </>
+              )}
             </ActorInfo>
-            <textarea
-              placeholder="What's on your mind? Name"
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-              cols="30"
-              rows="5"
-            ></textarea>
+            {props.user ? (
+              <textarea
+                placeholder={`What's on your mind? ${
+                  props.user.displayName.split(" ")[0]
+                }`}
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+                cols="30"
+                rows="5"
+              ></textarea>
+            ) : (
+              <textarea
+                placeholder="What's on your mind? Name"
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
+                cols="30"
+                rows="5"
+              ></textarea>
+            )}
             <ImgPost>
               <small>Add your Post</small>
               <label htmlFor="upload__img">
@@ -57,7 +87,18 @@ const PostModal = (props) => {
               id="upload__img"
               style={{ display: "none" }}
             />
-            <input type="submit" value="Post" />
+            <input
+              type="submit"
+              value="Post"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("clicked");
+              }}
+              disabled={caption.length === 0}
+              style={{
+                backgroundColor: caption.length === 0 ? "lightblue" : "#1b74e4",
+              }}
+            />
           </CreatePost>
         </Modal>
       </Container>
@@ -149,7 +190,7 @@ const CreatePost = styled.div`
     padding: 12px 0;
     border: none;
     border-radius: 10px;
-    background-color: #1b74e4;
+
     width: 100%;
     font-size: 14px;
     font-weight: bold;
@@ -192,6 +233,7 @@ const ImgPost = styled.div`
 
 const mapStateToProps = (state) => ({
   display: state.togglePostModalState,
+  user: state.userState.user,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("none")),

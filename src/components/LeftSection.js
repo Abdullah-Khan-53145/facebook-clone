@@ -1,15 +1,24 @@
 import styled from "styled-components";
 import SideEntries from "./SideEntries";
+import { connect } from "react-redux";
 const LeftSection = (props) => {
   return (
     <>
       <Container>
         <div>
-          <SideEntries
-            image="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-            title="My Name"
-            marginBottom="15px"
-          />
+          {props.user ? (
+            <SideEntries
+              image={props.user.photoURL}
+              title={props.user.displayName}
+              marginBottom="15px"
+            />
+          ) : (
+            <SideEntries
+              image="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+              title="My Name"
+              marginBottom="15px"
+            />
+          )}
           <SideEntries
             image="https://static.xx.fbcdn.net/rsrc.php/v3/y8/r/S0U5ECzYUSu.png"
             title="Find Friends"
@@ -37,8 +46,12 @@ const LeftSection = (props) => {
         </div>
         <div>
           <h1>Your Shortcuts</h1>
-          <SideEntries />
-          <small>Made by ABDULLAH KHAN</small>
+
+          <small>
+            Made by ABDULLAH KHAN
+            <br />
+            abdullah.khan53145@gmail.com
+          </small>
         </div>
       </Container>
     </>
@@ -79,4 +92,11 @@ const Container = styled.div`
 //   li {
 //   }
 // `;
-export default LeftSection;
+
+const mapStateToProps = (state) => ({
+  user: state.userState.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftSection);

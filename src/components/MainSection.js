@@ -10,13 +10,21 @@ const MainSection = (props) => {
         <CreateAPost>
           <UpperSection>
             <div>
-              <img
-                src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-                alt=""
-              />
+              {props.user ? (
+                <img src={props.user.photoURL} alt="" />
+              ) : (
+                <img
+                  src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                  alt=""
+                />
+              )}
             </div>
             <button onClick={props.toggleModal}>
-              What's on your mind, Abdullah?
+              {props.user
+                ? `What's on your mind, ${
+                    props.user.displayName.split(" ")[0]
+                  }?`
+                : `What's on your mind, Name`}
             </button>
           </UpperSection>
           <LowerSection>
@@ -139,7 +147,9 @@ const LowerSection = styled.div`
   }
 `;
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.userState.user,
+});
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("flex")),
 });

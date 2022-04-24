@@ -1,6 +1,22 @@
 import styled from "styled-components";
-
+import { connect } from "react-redux";
+import { signInAPI } from "../actions";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 const Login = (props) => {
+  const handleLogin = (e) => {
+    e.preventDefault();
+    props.signIn();
+  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (props.user) {
+      navigate("/home");
+    } else {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, [props.user]);
   return (
     <>
       <Container>
@@ -10,7 +26,7 @@ const Login = (props) => {
             alt=""
           />
 
-          <button>
+          <button onClick={handleLogin}>
             <img
               src="https://assets.materialup.com/uploads/7ba6f741-2ff3-4d2f-8439-a160aa884e7b/preview"
               alt=""
@@ -72,4 +88,12 @@ const LoginModal = styled.div`
   }
 `;
 
-export default Login;
+const mapStateToProps = (state) => ({
+  user: state.userState.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  signIn: () => dispatch(signInAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

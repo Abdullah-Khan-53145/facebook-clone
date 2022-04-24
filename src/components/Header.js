@@ -1,5 +1,21 @@
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { useEffect } from "react";
+import { signOutAPI } from "../actions";
+import { useNavigate } from "react-router-dom";
 const Header = (props) => {
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    props.SignOut();
+  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!props.user) {
+      navigate("/");
+    } else {
+      navigate("/home");
+    }
+  }, [props.user]);
   return (
     <>
       <Container>
@@ -31,11 +47,20 @@ const Header = (props) => {
         </MidSection>
         <RightSection>
           <UserProfile>
-            <img
-              src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-              alt=""
-            />
-            <span>Abdullah Khan</span>
+            {props.user ? (
+              <>
+                <img src={props.user.photoURL} alt="" />
+                <span>{props.user.displayName}</span>
+              </>
+            ) : (
+              <>
+                <img
+                  src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                  alt=""
+                />
+                <span>Abdullah Khan</span>
+              </>
+            )}
           </UserProfile>
           <div>
             <div>
@@ -49,7 +74,7 @@ const Header = (props) => {
             </div>
             <div>
               <i className="fa-solid fa-caret-down"></i>
-              <a>Signout</a>
+              <a onClick={handleLogOut}>Logout</a>
             </div>
           </div>
         </RightSection>
@@ -204,4 +229,12 @@ const UserProfile = styled.div`
   }
 `;
 const SignOut = styled.div``;
-export default Header;
+const mapStateToProps = (state) => ({
+  user: state.userState.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  SignOut: () => dispatch(signOutAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
