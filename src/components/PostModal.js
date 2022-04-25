@@ -2,11 +2,24 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { togglePostModal } from "../actions";
 import { useState } from "react";
+import { UploadPost } from "../actions";
 
 const PostModal = (props) => {
   // later after making login component
-  // const [img, setImg] = useState();
+
+  const [img, setImg] = useState();
+  const [loading, setLoading] = useState(false);
   const [caption, setCaption] = useState("");
+  const handleChange = (e) => {
+    setLoading(true);
+    const image = e.target.files[0];
+    if (image === "" || image === undefined) {
+      alert(`not a image, the file is a ${typeof image}`);
+      return;
+    }
+    setImg(image);
+    props.uploadPost(img);
+  };
   const handleClose = (e) => {
     e.preventDefault();
     props.toggleModal();
@@ -85,13 +98,15 @@ const PostModal = (props) => {
               name="upload__img"
               accept="image/png, image/gif, image/jpeg"
               id="upload__img"
-              onC
               style={{ display: "none" }}
+              onChange={handleChange}
             />
             <PostImg>
-              <div>
-                <img src="https://wallpapercave.com/wp/wp7992445.jpg" alt="" />
-              </div>
+              {props.imgURL && (
+                <div>
+                  <img src={props.imgURL} alt="" />
+                </div>
+              )}
             </PostImg>
             <input
               type="submit"
@@ -253,8 +268,10 @@ const PostImg = styled.div`
 const mapStateToProps = (state) => ({
   display: state.togglePostModalState,
   user: state.userState.user,
+  imgURL: state.ImgState.imgURL,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("none")),
+  uploadPost: (payload) => dispatch(UploadPost(payload)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
