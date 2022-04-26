@@ -2,8 +2,13 @@ import styled from "styled-components";
 import Post from "./Post";
 import PostModal from "./PostModal";
 import { connect } from "react-redux";
-import { togglePostModal } from "../actions";
+import { getPostAPI, togglePostModal } from "../actions";
+import { useEffect } from "react";
+
 const MainSection = (props) => {
+  useEffect(() => {
+    props.setPost();
+  }, []);
   return (
     <>
       <Container>
@@ -42,12 +47,18 @@ const MainSection = (props) => {
             </button>
           </LowerSection>
         </CreateAPost>
-        <Post
-          name="Abdullah Khan"
-          profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-          caption="This is my post"
-          Img="https://w0.peakpx.com/wallpaper/14/880/HD-wallpaper-anime-anime-boys-glowing.jpg"
-        />
+        {props.posts.length !== 0 ? (
+          props.posts.map((post) => {
+            <Post
+              name="Abdullah Khan"
+              profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+              caption="This is my post"
+              Img="https://w0.peakpx.com/wallpaper/14/880/HD-wallpaper-anime-anime-boys-glowing.jpg"
+            />;
+          })
+        ) : (
+          <p>No post found</p>
+        )}
         <Post
           name="Abdullah Khan"
           profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
@@ -149,8 +160,10 @@ const LowerSection = styled.div`
 
 const mapStateToProps = (state) => ({
   user: state.userState.user,
+  posts: state.postState,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("flex")),
+  setPost: () => dispatch(getPostAPI()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MainSection);

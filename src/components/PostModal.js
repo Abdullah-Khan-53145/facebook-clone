@@ -10,14 +10,15 @@ import { collection, onSnapshot } from "firebase/firestore";
 const PostModal = (props) => {
   // later after making login component
 
-  useEffect(() => {
+  const countPost = () => {
+    let postArr = [];
     onSnapshot(collection(db, "Posts"), (onsnapshot) => {
-      onsnapshot.docs.forEach((doc) => setPost(post.concat(doc.data())));
+      onsnapshot.docs.forEach((doc) => postArr.push(doc.data()));
     });
-    console.log(post);
-  }, []);
+    return postArr;
+  };
+  useEffect(() => console.log(countPost()));
   const [img, setImg] = useState(null);
-  const [post, setPost] = useState([]);
   const [caption, setCaption] = useState("");
   const handleChange = (e) => {
     const image = e.target.files[0];
@@ -37,6 +38,7 @@ const PostModal = (props) => {
       },
       postImg: img,
       postCaption: caption,
+      key: Math.floor(Math.random() * 100),
     });
     reset();
   };

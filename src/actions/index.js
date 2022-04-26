@@ -1,5 +1,6 @@
 import {
   SET_LOADING,
+  SET_POST,
   SET_POST_IMG,
   SET_USER,
   TOGGLE_POST_MODAL,
@@ -8,13 +9,17 @@ import { auth, provider } from "../firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export const togglePostModal = (payload) => ({
   type: TOGGLE_POST_MODAL,
   payload: payload,
 });
 
+export const setPost = (post) => ({
+  type: SET_POST,
+  payload: post,
+});
 export const setUser = (user) => ({
   type: SET_USER,
   payload: user,
@@ -90,11 +95,23 @@ export const UploadPost = (payload) => {
             user: payload.user,
             caption: payload.postCaption,
             img: downloadURL,
+            key: payload.key,
           });
           console.log("Document written with ID: ", docRef.id);
           dispatch(setLoading(false));
         });
       }
     );
+  };
+};
+
+export const getPostAPI = () => {
+  return async (dispatch) => {
+    const querySnapshot = await getDocs(collection(db, "cities"));
+    const posts = [];
+    querySnapshot.forEach((doc) => {
+      posts.push(doc);
+    });
+    dispatch(setPost(posts));
   };
 };
