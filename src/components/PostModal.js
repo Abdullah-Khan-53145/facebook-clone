@@ -3,22 +3,47 @@ import { connect } from "react-redux";
 import { togglePostModal } from "../actions";
 import { useState } from "react";
 import { UploadPost } from "../actions";
+import { useEffect } from "react";
+import { db } from "../firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 const PostModal = (props) => {
   // later after making login component
 
-  const [img, setImg] = useState();
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    onSnapshot(collection(db, "Posts"), (onsnapshot) => {
+      onsnapshot.docs.forEach((doc) => setPost(post.concat(doc.data())));
+    });
+    console.log(post);
+  }, []);
+  const [img, setImg] = useState(null);
+  const [post, setPost] = useState([]);
   const [caption, setCaption] = useState("");
   const handleChange = (e) => {
-    setLoading(true);
     const image = e.target.files[0];
     if (image === "" || image === undefined) {
       alert(`not a image, the file is a ${typeof image}`);
       return;
     }
+
     setImg(image);
-    props.uploadPost(img);
+  };
+  const handlePostClick = (e) => {
+    e.preventDefault();
+    props.uploadPost({
+      user: {
+        name: props.user.displayName,
+        profile: props.user.photoURL,
+      },
+      postImg: img,
+      postCaption: caption,
+    });
+    reset();
+  };
+  const reset = () => {
+    setImg("");
+    setCaption("");
+    props.toggleModal();
   };
   const handleClose = (e) => {
     e.preventDefault();
@@ -67,6 +92,7 @@ const PostModal = (props) => {
                 </>
               )}
             </ActorInfo>
+
             {props.user ? (
               <textarea
                 placeholder={`What's on your mind? ${
@@ -102,22 +128,23 @@ const PostModal = (props) => {
               onChange={handleChange}
             />
             <PostImg>
-              {props.imgURL && (
+              {img && (
                 <div>
-                  <img src={props.imgURL} alt="" />
+                  <img src={URL.createObjectURL(img)} alt="" />
+                  <button onClick={() => setImg("")}>
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
                 </div>
               )}
             </PostImg>
             <input
               type="submit"
               value="Post"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log("clicked");
-              }}
-              disabled={caption.length === 0}
+              onClick={handlePostClick}
+              disabled={caption.length === 0 || img === ""}
               style={{
-                backgroundColor: caption.length === 0 ? "lightblue" : "#1b74e4",
+                backgroundColor:
+                  caption.length === 0 || img === "" ? "lightblue" : "#1b74e4",
               }}
             />
           </CreatePost>
@@ -253,6 +280,7 @@ const ImgPost = styled.div`
 `;
 
 const PostImg = styled.div`
+  position: relative;
   div {
     display: flex;
     justify-content: flex-start;
@@ -263,12 +291,30 @@ const PostImg = styled.div`
       object-fit: contain;
     }
   }
+  button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+    padding: 6px 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: lightgray;
+    }
+    i {
+      font-size: 18px;
+      color: gray;
+    }
+  }
 `;
 
 const mapStateToProps = (state) => ({
   display: state.togglePostModalState,
   user: state.userState.user,
   imgURL: state.ImgState.imgURL,
+  Loading: state.loadingState,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("none")),

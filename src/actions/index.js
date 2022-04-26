@@ -1,8 +1,15 @@
-import { SET_POST_IMG, SET_USER, TOGGLE_POST_MODAL } from "./actionTypes";
+import {
+  SET_LOADING,
+  SET_POST_IMG,
+  SET_USER,
+  TOGGLE_POST_MODAL,
+} from "./actionTypes";
 import { auth, provider } from "../firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
+import { storage, db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
+
 export const togglePostModal = (payload) => ({
   type: TOGGLE_POST_MODAL,
   payload: payload,
@@ -16,6 +23,11 @@ export const setUser = (user) => ({
 export const setImage = (imgURL) => ({
   type: SET_POST_IMG,
   payload: imgURL,
+});
+
+export const setLoading = (status) => ({
+  type: SET_LOADING,
+  payload: status,
 });
 
 export const signInAPI = () => {
@@ -44,9 +56,13 @@ export const signOutAPI = () => {
 
 export const UploadPost = (payload) => {
   return (dispatch) => {
-    const storageRef = ref(storage, "images/");
-
-    const uploadTask = uploadBytesResumable(storageRef, payload);
+    dispatch(setLoading(true));
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+    console.log(payload);
+    const storageRef = ref(storage, "images/" + payload.postImg.name);
+    const uploadTask = uploadBytesResumable(storageRef, payload.img, metadata);
 
     uploadTask.on(
       "state_changed",
@@ -67,9 +83,16 @@ export const UploadPost = (payload) => {
         console.log(error.code);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
           console.log("File available at", downloadURL);
-          dispatch(setImage(downloadURL));
+          // Add a new document with a generated id.
+          const docRef = await addDoc(collection(db, "Posts"), {
+            user: payload.user,
+            caption: payload.postCaption,
+            img: downloadURL,
+          });
+          console.log("Document written with ID: ", docRef.id);
+          dispatch(setLoading(false));
         });
       }
     );
