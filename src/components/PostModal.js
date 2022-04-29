@@ -3,21 +3,18 @@ import { connect } from "react-redux";
 import { togglePostModal } from "../actions";
 import { useState } from "react";
 import { UploadPost } from "../actions";
-import { useEffect } from "react";
 import { db } from "../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 
 const PostModal = (props) => {
   // later after making login component
-
+  const [posts, setPosts] = useState([]);
   const countPost = () => {
-    let postArr = [];
-    onSnapshot(collection(db, "Posts"), (onsnapshot) => {
-      onsnapshot.docs.forEach((doc) => postArr.push(doc.data()));
+    onSnapshot(collection(db, "Posts"), (snapshot) => {
+      setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
-    return postArr;
+    return posts.length;
   };
-  useEffect(() => console.log(countPost()));
   const [img, setImg] = useState(null);
   const [caption, setCaption] = useState("");
   const handleChange = (e) => {
@@ -38,7 +35,7 @@ const PostModal = (props) => {
       },
       postImg: img,
       postCaption: caption,
-      key: Math.floor(Math.random() * 100),
+      key: countPost() === 0 ? 1 : countPost() + 1,
     });
     reset();
   };
@@ -54,6 +51,7 @@ const PostModal = (props) => {
   return (
     <>
       <Container style={props.display}>
+        <h1>{countPost()}</h1>
         <Modal>
           <ModalHeader>
             <h1>Create Post</h1>

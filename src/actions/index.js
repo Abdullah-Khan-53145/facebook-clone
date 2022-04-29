@@ -66,8 +66,12 @@ export const UploadPost = (payload) => {
       contentType: "image/jpeg",
     };
     console.log(payload);
-    const storageRef = ref(storage, "images/" + payload.postImg.name);
-    const uploadTask = uploadBytesResumable(storageRef, payload.img, metadata);
+    const storageRef = ref(storage, `images/${payload.postImg.name}`);
+    const uploadTask = uploadBytesResumable(
+      storageRef,
+      payload.postImg,
+      metadata
+    );
 
     uploadTask.on(
       "state_changed",

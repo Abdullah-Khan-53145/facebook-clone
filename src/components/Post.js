@@ -1,6 +1,31 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { onSnapshot, collection } from "firebase/firestore";
+import { addDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { connect } from "react-redux";
 const Post = (props) => {
-  const { name, profile, caption, Img } = props;
+  const { id, name, profile, caption, Img } = props;
+  const [comment, setComment] = useState("");
+  const [allComments, setAllComments] = useState([]);
+  useEffect(() => {
+    onSnapshot(collection(db, `Posts/${id}/comments`), (snapshot) => {
+      setAllComments(snapshot.docs.map((doc) => doc.data()));
+    });
+  });
+
+  const postComment = async (commentToPost) => {
+    const docRef = await addDoc(collection(db, `Posts/${id}/comments`), {
+      profile: props.user.photoURL,
+      name: props.user.displayName,
+      comment: commentToPost,
+    });
+  };
+  const handleClick = () => {
+    postComment(comment);
+    setComment("");
+  };
+
   return (
     <>
       <Container>
@@ -41,17 +66,26 @@ const Post = (props) => {
           </button>
         </SocialActions>
         <PostComment>
-          <img
-            src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-            alt=""
-          />
+          {props.user ? (
+            <img src={props.user.photoURL} alt="" />
+          ) : (
+            <img
+              src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+              alt=""
+            />
+          )}
           <CommentInput
             onSubmit={(e) => {
               e.preventDefault();
-              console.log(e.target.value);
+              handleClick();
             }}
           >
-            <input type="text" placeholder="Write a public comment..." />
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a public comment..."
+            />
             <i className="fa-solid fa-face-smile"></i>
             <i className="fa-solid fa-camera"></i>
 
@@ -59,16 +93,16 @@ const Post = (props) => {
           </CommentInput>
         </PostComment>
         <small>Enter to post</small>
-        <Comment>
-          <img
-            src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-            alt=""
-          />
-          <div>
-            <span>Name of Commentator</span>
-            <p>Comment, This is the comment of the another or this user</p>
-          </div>
-        </Comment>
+        {allComments.length !== 0 &&
+          allComments.map((comment, index) => (
+            <Comment key={index}>
+              <img src={comment.profile} alt="" />
+              <div>
+                <span>{comment.name}</span>
+                <p>{comment.comment}</p>
+              </div>
+            </Comment>
+          ))}
       </Container>
     </>
   );
@@ -81,6 +115,7 @@ const Container = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  animation: fadeIn 0.2s ease;
   p {
     text-align: start;
     margin: 10px;
@@ -167,12 +202,14 @@ const CommentInput = styled.form`
 `;
 
 const Comment = styled(PostComment)`
+  margin: 10px 0;
+
   div {
     width: 100%;
     text-align: start;
     font-size: 14px;
-    border-radius: 50px;
-    padding: 0px 20px;
+    border-radius: 20px;
+    padding: 8px 20px;
     background-color: #f0f2f5;
     span {
       font-weight: bold;
@@ -183,4 +220,10 @@ const Comment = styled(PostComment)`
   }
 `;
 
-export default Post;
+const mapStateToProps = (state) => ({
+  user: state.userState.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

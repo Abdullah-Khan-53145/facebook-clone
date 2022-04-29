@@ -4,10 +4,37 @@ import PostModal from "./PostModal";
 import { connect } from "react-redux";
 import { getPostAPI, togglePostModal } from "../actions";
 import { useEffect } from "react";
+import { useState } from "react";
+import { db } from "../firebase";
+import { collection } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 
 const MainSection = (props) => {
+  const [post, setPost] = useState([]);
+  function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return function (a, b) {
+      /* next line works with strings and numbers,
+       * and you may want to customize it to your needs
+       */
+      var result =
+        a[property] > b[property] ? -1 : a[property] < b[property] ? 1 : 0;
+      return result * sortOrder;
+    };
+  }
   useEffect(() => {
     props.setPost();
+    onSnapshot(collection(db, "Posts"), (snapshot) => {
+      setPost(
+        snapshot.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .sort(dynamicSort("key"))
+      );
+    });
   }, []);
   return (
     <>
@@ -47,36 +74,23 @@ const MainSection = (props) => {
             </button>
           </LowerSection>
         </CreateAPost>
-        {props.posts.length !== 0 ? (
-          props.posts.map((post) => {
-            <Post
-              name="Abdullah Khan"
-              profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-              caption="This is my post"
-              Img="https://w0.peakpx.com/wallpaper/14/880/HD-wallpaper-anime-anime-boys-glowing.jpg"
-            />;
+        {post.length !== 0 ? (
+          post.map((post, index) => {
+            return (
+              <Post
+                key={index}
+                name={post.user.name}
+                profile={post.user.profile}
+                caption={post.caption}
+                Img={post.img}
+                id={post.id}
+              />
+            );
           })
         ) : (
           <p>No post found</p>
         )}
-        <Post
-          name="Abdullah Khan"
-          profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-          caption="This is my post"
-          Img="https://p4.wallpaperbetter.com/wallpaper/745/67/618/jujutsu-kaisen-anime-boys-anime-hd-wallpaper-preview.jpg"
-        />
-        <Post
-          name="Abdullah Khan"
-          profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-          caption="This is my post"
-          Img="https://fsa.zobj.net/crop.php?r=Of_woHym0q3MMk3Xd_-L78f7qIQtJqVuPezwZcAIa4QRUO-yRY5dwGgds6ATQm72w8zuZd0AGTuSNjrnHnepVsMTUAceOMJPXA5ZHrwYd_0qex0-AccDShLIpMzubXI_gZv9Fb7Uaycb3_SeTFNveKGSx9l7wW7WuwrfKCgwjGxMeCJUraSZ55jhro-wH4Nfse8hi2TixXp7BhJB"
-        />
-        <Post
-          name="Abdullah Khan"
-          profile="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-          caption="This is my post"
-          Img="https://wallpaperaccess.com/full/6319352.jpg"
-        />
+
         <PostModal />
       </Container>
     </>
