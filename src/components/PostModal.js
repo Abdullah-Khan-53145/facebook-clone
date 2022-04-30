@@ -51,7 +51,6 @@ const PostModal = (props) => {
   return (
     <>
       <Container style={props.display}>
-        <h1>{countPost()}</h1>
         <Modal>
           <ModalHeader>
             <h1>Create Post</h1>

@@ -74,6 +74,13 @@ const MainSection = (props) => {
             </button>
           </LowerSection>
         </CreateAPost>
+        {props.Loading && (
+          <Spinner>
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </Spinner>
+        )}
         {post.length !== 0 ? (
           post.map((post, index) => {
             return (
@@ -88,7 +95,11 @@ const MainSection = (props) => {
             );
           })
         ) : (
-          <p>No post found</p>
+          <Spinner>
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </Spinner>
         )}
 
         <PostModal />
@@ -175,9 +186,13 @@ const LowerSection = styled.div`
 const mapStateToProps = (state) => ({
   user: state.userState.user,
   posts: state.postState,
+  Loading: state.loadingState,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleModal: () => dispatch(togglePostModal("flex")),
   setPost: () => dispatch(getPostAPI()),
 });
+const Spinner = styled.div`
+  padding-bottom: 20px;
+`;
 export default connect(mapStateToProps, mapDispatchToProps)(MainSection);
